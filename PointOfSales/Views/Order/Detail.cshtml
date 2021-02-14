@@ -1,0 +1,34 @@
+﻿@model PointOfSales.ViewModels.OrderViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>Detail</h1>
+@using (Html.BeginForm("AddItemToCart", "Order", FormMethod.Post))
+{
+    <table style="width: 100%;">
+        <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Cost</th>
+            <th>&nbsp;</th>
+        </tr>
+        @foreach (var subject in Model.LaptopItems)
+        {
+            <tr>
+                <td>
+                    @subject.Name
+                </td>
+                <td>
+                    @subject.Brand
+                </td>
+                <td>
+                    @subject.Cost
+                </td>
+                <td>
+                    <button name="submit" value='@subject.Id'> Submit </button>
+                </td>
+            </tr>
+        }
+    </table>
+}

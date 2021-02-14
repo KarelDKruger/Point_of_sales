@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - PointOfSales</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/fontawesome-free-5.15.2-web/css/all.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-grid.css" rel="stylesheet" />
+
 </head>
 <body>
     <header>
@@ -24,8 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Detail">Order</a>
+                        </li>
                     </ul>
                 </div>
+            </div>
+            <div class="cart">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CheckOut"><i class="fas fa-shopping-cart"></i></a>
             </div>
         </nav>
     </header>
@@ -42,7 +52,9 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/bootstrap.js" asp-append-version="true"></script>
+    <script src="~/lib/fontawesome-free-5.15.2-web/js/all.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

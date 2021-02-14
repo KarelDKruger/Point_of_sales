@@ -1,0 +1,32 @@
+﻿@model PointOfSales.ViewModels.CustomiseLaptopViewModel
+@{
+    ViewData["Title"] = "View Cart";
+}
+
+<table style="width: 100%;">
+    <tr>
+        <th>Laptop Selected</th>
+        <th>Configuration</th>
+        <th>Cost</th>
+        <th>&nbsp;</th>
+    </tr>
+    @foreach (var subject in Model.SalesItems)
+    {
+        <tr>
+            <td>
+                @subject.Laptop.Name
+            </td>
+            <td>
+                <ul>
+                    <li>@subject.Hdd.Name @subject.Hdd.HddSize</li>
+                    <li>@subject.Ram.Name @subject.Ram.RamSize</li>
+                    <li>@subject.Color.Name</li>
+                </ul>
+            </td>
+            <td>
+                excluding Vat @subject.CostExcVat
+                including Vat @subject.CostIncVat
+            </td>
+        </tr>
+    }
+</table>

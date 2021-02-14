@@ -1,0 +1,16 @@
+﻿@model PointOfSales.ViewModels.CustomiseLaptopViewModel
+@{
+    ViewData["Title"] = "Customise";
+}
+
+@using (Html.BeginForm("AddItemToCart", "Order", FormMethod.Post))
+{
+    @Html.DropDownList(m => m.HddSelectedItem, Model.HddItems, "Please select a Hard Drive");
+    @Html.DropDownList(m => m.RamSelectedItem, Model.RamItems, "Please select a Ram");
+    @Html.DropDownList(m => m.ColorSelectedSelection, Model.ColorSelectedSelection, 
+        "Please select a Colour");
+
+    <label class="Total"></label>
+    <button>Add To Cart</button>
+}
+@*Todo: add Script to update total in real time*@
