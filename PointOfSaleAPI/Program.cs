@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace PointOfSaleAPI
 {
     // test changes
+    // test 2
     public class Program
     {
         public static void Main(string[] args)
