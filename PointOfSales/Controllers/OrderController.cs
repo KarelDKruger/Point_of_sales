@@ -37,10 +37,17 @@ namespace PointOfSales.Controllers
         }
 
         // submit
-        [HttpPost]
-        public IActionResult CheckOut(CustomiseLaptopViewModel model)
+        //[HttpPost]
+        public IActionResult CheckOut()
         {
-            throw new NotImplementedException();
+            var existingStr = HttpContext.Session.GetString("CartItems");
+            var sessionModel = JsonConvert.DeserializeObject<CustomiseLaptopViewModel>(existingStr);
+            if (sessionModel == null)
+            {
+                sessionModel = new CustomiseLaptopViewModel(_configuration);
+            }
+            var test = "";
+            return View("ViewCart", sessionModel);
         }
 
         [HttpPost]
@@ -101,6 +108,7 @@ namespace PointOfSales.Controllers
                     Color = color,
                     Hdd = hdd,
                     Ram = ram,
+                    Laptop = sessionModel.LaptopSelectedItem,
                     CostExcVat = color.Cost + hdd.Cost + ram.Cost + sessionModel.LaptopSelectedItem.Cost,
                     CostIncVat = (color.Cost + hdd.Cost + ram.Cost + sessionModel.LaptopSelectedItem.Cost) * 1.15M,
 
