@@ -55,7 +55,7 @@ namespace PointOfSales.Controllers
                 CustomiseLaptopViewModel model = new CustomiseLaptopViewModel(_configuration);
 
                 model.HddItems = await model.GetHDDsAsync("api/GetHdd");
-                model.ColorSelections = await model.GetColorAsync("api/GetColor");
+                model.ColorSelections = await model.GetColorsAsync("api/GetColor");
                 model.RamItems = await model.GetRamAsync("api/GetRam");
                 model.LaptopSelectedItem = await model.GetLaptopsAsync("api/GetLaptopBrands/" + submit.ToString());
                 var test = "";
@@ -66,8 +66,9 @@ namespace PointOfSales.Controllers
             else
             {
                 sessionModel.HddItems = await sessionModel.GetHDDsAsync("api/GetHdd");
-                sessionModel.ColorSelections = await sessionModel.GetColorAsync("api/GetColor");
+                sessionModel.ColorSelections = await sessionModel.GetColorsAsync("api/GetColor");
                 sessionModel.RamItems = await sessionModel.GetRamAsync("api/GetRam");
+                sessionModel.LaptopSelectedItem = await sessionModel.GetLaptopsAsync("api/GetLaptopBrands/" + submit.ToString());
                 var test = "";
                 var str = JsonConvert.SerializeObject(sessionModel);
                 HttpContext.Session.SetString("CartItems", str);
@@ -75,7 +76,8 @@ namespace PointOfSales.Controllers
             }
         }
 
-        public IActionResult SaveItemToCart(CustomiseLaptopViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> SaveItemToCart(int HddSelectedItem, int RamSelectedItem, int ColorSelectedSelection, int LaptopId)
         {
             var existingStr = HttpContext.Session.GetString("CartItems");
             var sessionModel = JsonConvert.DeserializeObject<CustomiseLaptopViewModel>(existingStr);
@@ -85,18 +87,31 @@ namespace PointOfSales.Controllers
             }
             else
             {
+                // get values
+                var color = await sessionModel.GetColorAsync("api/GetColor/" + ColorSelectedSelection.ToString());
+                var hdd = await sessionModel.GetHDDAsync("api/GetHdd/" + HddSelectedItem.ToString());
+                var ram = await sessionModel.GetRamAsy("api/GetRam/" + RamSelectedItem.ToString());
+                if (sessionModel.SalesItems == null)
+                {
+                    sessionModel.SalesItems = new List<SalesItem>();
+                }
+
                 sessionModel.SalesItems.Add(new SalesItem
                 {
-                    Color = model.ColorSelectedSelection,
-                    Hdd = model.HddSelectedItem,
-                    Ram = model.RamSelectedItem,
-                    Laptop = model.LaptopSelectedItem,
-                    CostExcVat = model.ColorSelectedSelection.Cost + model.HddSelectedItem.Cost + model.RamSelectedItem.Cost + model.LaptopSelectedItem.Cost,
-                    CostIncVat = (model.ColorSelectedSelection.Cost + model.HddSelectedItem.Cost + model.RamSelectedItem.Cost + model.LaptopSelectedItem.Cost) * 1.15M,
-                    
+                    Color = color,
+                    Hdd = hdd,
+                    Ram = ram,
+                    CostExcVat = color.Cost + hdd.Cost + ram.Cost + sessionModel.LaptopSelectedItem.Cost,
+                    CostIncVat = (color.Cost + hdd.Cost + ram.Cost + sessionModel.LaptopSelectedItem.Cost) * 1.15M,
+
                 });
             }
-            return View("Detail");
+            var str = JsonConvert.SerializeObject(sessionModel);
+            HttpContext.Session.SetString("CartItems", str);
+            OrderViewModel model = new OrderViewModel(_configuration);
+            model.LaptopItems = await model.GetLaptopsAsync("api/GetLaptopBrands");
+
+            return View("Detail", model);
         }
     }
 }

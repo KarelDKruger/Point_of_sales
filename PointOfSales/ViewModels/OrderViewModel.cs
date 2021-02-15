@@ -28,7 +28,11 @@ namespace PointOfSales.ViewModels
            
 
             // get values from api
-            client.BaseAddress = new Uri(_configuration["APIUrl"]);
+            if (client.BaseAddress == null)
+            {
+                client.BaseAddress = new Uri(_configuration["APIUrl"]);
+            }
+
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));

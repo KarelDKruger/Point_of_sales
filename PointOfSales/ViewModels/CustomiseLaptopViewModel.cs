@@ -37,9 +37,13 @@ namespace PointOfSales.ViewModels
             ColorSelections = new List<SelectListItem>();
             RamItems = new List<SelectListItem>();
 
-            // get values from api
-            //client.BaseAddress = new Uri(_configuration["APIUrl"]);// TODO: look into the problem with the json deserializes
-            client.BaseAddress = new Uri("https://localhost:44337/");// temp solution
+            if (client.BaseAddress == null)
+            {
+                // get values from api
+                //client.BaseAddress = new Uri(_configuration["APIUrl"]);// TODO: look into the problem with the json deserializes
+                client.BaseAddress = new Uri("https://localhost:44337/"); // temp solution
+            }
+
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -64,6 +68,18 @@ namespace PointOfSales.ViewModels
             return selectedList;
         }
 
+        public async Task<HddItem> GetHDDAsync(string path)
+        {
+            HddItem hdd = new HddItem();
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                hdd = JsonConvert.DeserializeObject<HddItem>(
+                    await response.Content.ReadAsStringAsync());
+            }
+            return hdd;
+        }
+
         public async Task<IEnumerable<SelectListItem>> GetRamAsync(string path)
         {
             List<RamItem> ramItems = new List<RamItem>();
@@ -83,7 +99,19 @@ namespace PointOfSales.ViewModels
             return selectedList;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetColorAsync(string path)
+        public async Task<RamItem> GetRamAsy(string path)
+        {
+            RamItem ram = new RamItem();
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                ram = JsonConvert.DeserializeObject<RamItem>(
+                    await response.Content.ReadAsStringAsync());
+            }
+            return ram;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetColorsAsync(string path)
         {
 
             List<ColorSelection> colorSelections = new List<ColorSelection>();
@@ -102,6 +130,18 @@ namespace PointOfSales.ViewModels
             }
             // convert items to selected list
             return selectedList;
+        }
+
+        public async Task<ColorSelection> GetColorAsync(string path)
+        {
+            ColorSelection color = new ColorSelection();
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                color = JsonConvert.DeserializeObject<ColorSelection>(
+                    await response.Content.ReadAsStringAsync());
+            }
+            return color;
         }
 
         public async Task<LaptopItem> GetLaptopsAsync(string path)

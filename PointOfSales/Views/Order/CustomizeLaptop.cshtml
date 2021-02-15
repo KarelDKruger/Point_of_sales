@@ -3,23 +3,24 @@
     ViewData["Title"] = "Customise";
 }
 
-@using (Html.BeginForm("SaveItemToCart", "Order", FormMethod.Post))
+@using (Html.BeginForm("SaveItemToCart", "Order", null, 
+    FormMethod.Post, null, new { @class = "form-horizontal", role = "form" }))
 {
     <div>
-        <label>HDD: </label>
-        @Html.DropDownListFor(m => m.HddSelectedItem, Model.HddItems, "Please select a Hard Drive", new{})
-    </div>
-    <div>
-        <label>Ram: </label>
-        @Html.DropDownListFor(m => m.RamSelectedItem, Model.RamItems, "Please select a Ram", new { })
-    </div>
-    <div>
-        <label>Colour: </label>
-        @Html.DropDownListFor(m => m.ColorSelectedSelection, Model.ColorSelections,
-            "Please select a Colour", new { })
-    </div>
+            <label>HDD: </label>
+            @Html.DropDownListFor(m => m.HddSelectedItem, Model.HddItems, "Please select a Hard Drive", new{})
+        </div>
+        <div>
+            <label>Ram: </label>
+            @Html.DropDownListFor(m => m.RamSelectedItem, Model.RamItems, "Please select a Ram", new { })
+        </div>
+        <div>
+            <label>Colour: </label>
+            @Html.DropDownListFor(m => m.ColorSelectedSelection, Model.ColorSelections,
+                "Please select a Colour", new { })
+        </div>
 
-    <label class="Total"></label>
-    <button>Add To Cart</button>
+    @*<label class="Total"></label>*@
+    <button type="submit" name="submit" value='@Model.LaptopSelectedItem.Id'>Add To Cart</button>
 }
 @*Todo: add Script to update total in real time*@
