@@ -3,12 +3,21 @@
     ViewData["Title"] = "Customise";
 }
 
-@using (Html.BeginForm("AddItemToCart", "Order", FormMethod.Post))
+@using (Html.BeginForm("SaveItemToCart", "Order", FormMethod.Post))
 {
-    @Html.DropDownList(m => m.HddSelectedItem, Model.HddItems, "Please select a Hard Drive");
-    @Html.DropDownList(m => m.RamSelectedItem, Model.RamItems, "Please select a Ram");
-    @Html.DropDownList(m => m.ColorSelectedSelection, Model.ColorSelectedSelection, 
-        "Please select a Colour");
+    <div>
+        <label>HDD: </label>
+        @Html.DropDownListFor(m => m.HddSelectedItem, Model.HddItems, "Please select a Hard Drive", new{})
+    </div>
+    <div>
+        <label>Ram: </label>
+        @Html.DropDownListFor(m => m.RamSelectedItem, Model.RamItems, "Please select a Ram", new { })
+    </div>
+    <div>
+        <label>Colour: </label>
+        @Html.DropDownListFor(m => m.ColorSelectedSelection, Model.ColorSelections,
+            "Please select a Colour", new { })
+    </div>
 
     <label class="Total"></label>
     <button>Add To Cart</button>
